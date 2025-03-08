@@ -1,23 +1,34 @@
-let ctr = 1;
-function deleteTodo(index) {
-  const element = document.getElementById(index);
-  element.parentNode.removeChild(element);
-}
-function addTodo() {
-  const value = document.querySelector("input").value;
-  const divEl = document.createElement("div");
-  const spanEl = document.createElement("span");
-  const buttonEl = document.createElement("button");
-  spanEl.innerHTML = value;
-  buttonEl.innerHTML = "Delete";
-  buttonEl.onclick = function () {
-    deleteTodo(divEl.id);
-  };
+let todos = [];
 
-  divEl.appendChild(spanEl);
-  divEl.appendChild(buttonEl);
-  divEl.id = ctr;
-  document.querySelector("body").appendChild(divEl);
-  ctr += 1;
+function addTodo() {
+  todos.push({
+    title: document.querySelector("input").value,
+  });
+  render();
+}
+
+function delFirst() {
+  todos.splice(0, 1);
+  render();
+}
+
+function delLast() {
+  todos.splice(todos.length - 1, 1);
+  render();
+}
+
+function addTodoComponent(todo) {
+  const div = document.createElement("div");
+  const span = document.createElement("span");
+  span.innerHTML = todo.title;
+  div.appendChild(span);
   document.querySelector("input").value = "";
+  return div;
+}
+function render() {
+  document.querySelector("#todos").innerHTML = "";
+  for (let i = 0; i < todos.length; i++) {
+    const element = addTodoComponent(todos[i]);
+    document.querySelector("#todos").appendChild(element);
+  }
 }
